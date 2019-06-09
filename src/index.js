@@ -1,15 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import { Provider } from 'react-redux'
-//import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import './index.css';
-import User from './User';
+import User from './components/User';
 import * as serviceWorker from './serviceWorker';
 import * as firebase from 'firebase';
-import SignIn from './SignIn';
-import TopicList from './TopicList';
+import SignIn from './components/SignIn';
+//import TopicList from './components/TopicList';
+import Home from './containers/Home';
 import Button from '@material-ui/core/Button';
+import reducer from './reducers/reducer';
+
+const store = createStore(reducer)
 
 class App extends React.Component {
   render() {
@@ -17,7 +21,7 @@ class App extends React.Component {
       <BrowserRouter>
         <div>
           <Switch>
-            <Route exact path={'/'} component={TopicList} />
+            <Route exact path={'/'} component={Home} />
             <Route path= {'/signin'} component={SignIn} />
           </Switch>
         </div>
@@ -27,7 +31,9 @@ class App extends React.Component {
 }
 
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('root')
 )
 

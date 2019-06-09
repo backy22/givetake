@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import * as firebase from 'firebase';
 
 class AddTopic extends React.Component {
@@ -23,7 +22,6 @@ class AddTopic extends React.Component {
 
   handleSubmit = e => {
     this.props.addTopic(this.state);
-
     this.setState({
       title: '',
       text: ''

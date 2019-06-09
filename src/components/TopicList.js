@@ -4,34 +4,20 @@ import ReactDOM from 'react-dom';
 //import { createStore } from 'redux'
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
-import './index.css';
-import * as firebase from 'firebase';
-//import Topic from './Topic';
 import AddTopic from './AddTopic';
 import User from './User';
-import * as serviceWorker from './serviceWorker';
+//import * as serviceWorker from './serviceWorker';
 import Button from '@material-ui/core/Button';
-
-var DB_CONFIG = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_DATABASE_URL,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-};
-
-console.log(DB_CONFIG);
+import { topicsRef, usersRef, authRef } from "../config/firebase";
 
 class TopicList extends React.Component {
   constructor(props) {
     super(props);
     this.addTopic = this.addTopic.bind(this);
-    
-    this.app = firebase.initializeApp(DB_CONFIG);
-    this.database = this.app.database().ref().child('topics');
 
     this.state = {
-      topics: []
+      topics: [],
+      users: []
     };
   }
 
@@ -42,11 +28,12 @@ class TopicList extends React.Component {
   componentWillMount(){
     const previousTopics = this.state.topics;
 
-    this.database.on('child_added', snap => {
+    topicsRef.on('child_added', snap => {
       previousTopics.push({
         id: snap.key,
         title: snap.val().title,
         text: snap.val().text,
+        uid: snap.val().uid,
         comments: snap.val().comments
       })
 
@@ -55,10 +42,25 @@ class TopicList extends React.Component {
       })
     })
 
+    const previousUsers = this.state.users;
+
+    usersRef.on('child_added', snap => {
+      previousUsers.push({
+        id: snap.key,
+        uid: snap.val().uid,
+      })
+
+      this.setState({
+        users: previousUsers
+      })
+    })
+
   }
 
   addTopic = fields => {
-    this.database.push().set(fields);
+    var user = authRef.currentUser;
+    fields['uid'] = user.uid
+    topicsRef.push().set(fields);
   }
 
   render() {
@@ -72,12 +74,12 @@ class TopicList extends React.Component {
           {this.state.topics.map((topic) => 
             <div>
               <Link to={"/topic/" + topic.id}>{topic.title}</Link>
-              <Link to={"/user/" + topic.user_id}>{topic.user_id}</Link>
+              <Link to={"/user/" + topic.uid}>{topic.uid}</Link>
             </div>
           )}
         <AddTopic addTopic={fields => this.addTopic(fields)} />
         <Route path={'/topic/:id'} render={props => <Topic topics={this.state.topics} {...props} />} />
-        <Route path={'/user/:user_id'} component={User}/>
+        <Route path={'/user/:uid'} render={props => <User topics={this.state.topics} users={this.state.users} {...props} />} />
         <Route path={'/add-topic'} component={AddTopic}/>
         </div>
       </BrowserRouter>
