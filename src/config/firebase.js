@@ -11,6 +11,7 @@ var DB_CONFIG = {
 firebase.initializeApp(DB_CONFIG);
 
 const databaseRef = firebase.database().ref();
+export const firebaseDb = firebase.database();
 export const topicsRef = databaseRef.child("topics");
 export const usersRef = databaseRef.child("users");
 export const authRef = firebase.auth();

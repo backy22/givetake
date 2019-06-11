@@ -1,3 +1,4 @@
+/* default */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -5,9 +6,60 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: -moz-linear-gradient(top, #F54EA2, #A94CAF);
+  background: -webkit-linear-gradient(top, #F54EA2, #A94CAF);
+  background: linear-gradient(to bottom, #F54EA2, #A94CAF);
+  height: 100vh;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.button {
+  color: #fff;
+}
+
+/* TopicList */
+.topic-list {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.topic {
+  clear: both;
+}
+
+.user-img {
+  float: left;
+}
+
+.user-img img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.topic-title {
+  padding: 10px;
+  margin: 10px;
+  background-color: #fff;
+  float: right;
+  width: 90%;
+  border-radius: 10px;
+}
+
+/* User page */
+.profile-img img {
+  width: 100px;
+  height: 100px;
+}
+
+/* Footer */
+footer {
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
 }

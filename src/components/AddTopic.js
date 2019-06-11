@@ -1,5 +1,7 @@
 import React from 'react';
 import * as firebase from 'firebase';
+import { topicsRef, usersRef, authRef } from "../config/firebase";
+import Button from '@material-ui/core/Button';
 
 class AddTopic extends React.Component {
   constructor(props) {
@@ -21,16 +23,26 @@ class AddTopic extends React.Component {
   }
 
   handleSubmit = e => {
-    this.props.addTopic(this.state);
     this.setState({
       title: '',
       text: ''
     });
+    var field = this.state;
+    var user = authRef.currentUser;
+    field['uid'] = user.uid
+    topicsRef.push().set(field);
+  }
+
+  handleToTopicListPage = () => {
+    this.props.history.push('/')
   }
 
   render() {
     return (
       <div className="AddTopic">
+        <Button onClick={this.handleToTopicListPage}>
+          Topic List
+        </Button>
         <input
           name="title"
           type="text"
