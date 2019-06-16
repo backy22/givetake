@@ -3,6 +3,8 @@ import firebase from 'firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import Button from '@material-ui/core/Button';
 import { topicsRef, usersRef, authRef} from "../config/firebase";
+import { connect } from 'react-redux'
+import { fetchUser } from '../actions/authActions';
 
 const uiConfig = {
   signInFlow: 'popup',
@@ -19,15 +21,10 @@ class SignIn extends React.Component {
   };
 
   componentDidMount() {
-    authRef.onAuthStateChanged(user => {
-      this.setState({
-        loading: false,
-        user: user
-      });
-      
-      //uidで照合してupdateなのかnewなのか判定する必要
-      //usersRef.push().set({uid: user.uid, name: user.displayName, email: user.email, photo_url: user.photoURL, provider_id: user.providerData[0].providerId});
+    this.setState({
+      loading: false
     });
+    this.props.fetchUser(this.state.user)
   }
 
   logout() {
@@ -45,9 +42,9 @@ class SignIn extends React.Component {
         <Button onClick={this.handleToTopicListPage}>
           Home
         </Button>
-        Username: {this.state.user && this.state.user.displayName}
+        Username: {this.props.auth && this.props.auth.displayName}
         <br />
-        {this.state.user ?
+        {this.props.auth ?
           (<button onClick={this.logout}>Logout</button>) :
           (<SignInScreen />)
         }
@@ -64,6 +61,9 @@ const SignInScreen = (props) => {
   );
 }
 
-export default SignIn;
+const mapStateToProps = (state) => {
+  return state;
+};
 
+export default connect(mapStateToProps, {fetchUser})(SignIn);
 

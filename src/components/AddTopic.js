@@ -2,6 +2,9 @@ import React from 'react';
 import * as firebase from 'firebase';
 import { topicsRef, usersRef, authRef } from "../config/firebase";
 import Button from '@material-ui/core/Button';
+import { connect } from 'react-redux'
+import { fetchTopics, addTopic } from '../actions/topicActions';
+import { fetchUser } from '../actions/authActions';
 
 class AddTopic extends React.Component {
   constructor(props) {
@@ -17,9 +20,7 @@ class AddTopic extends React.Component {
   }
 
   handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleSubmit = e => {
@@ -27,10 +28,14 @@ class AddTopic extends React.Component {
       title: '',
       text: ''
     });
-    var field = this.state;
     var user = authRef.currentUser;
-    field['uid'] = user.uid
-    topicsRef.push().set(field);
+  
+    const topic = {
+      title: this.state.title,
+      text: this.state.text,
+      uid: user.uid
+    }
+    this.props.addTopic(topic);
   }
 
   handleToTopicListPage = () => {
@@ -68,4 +73,8 @@ class AddTopic extends React.Component {
   }
  }
 
-export default AddTopic;
+const mapStateToProps = (state) => {
+  return state;
+};
+
+export default connect(mapStateToProps, {addTopic})(AddTopic);

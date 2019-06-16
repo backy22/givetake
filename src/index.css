@@ -27,12 +27,8 @@ code {
   margin: 0 auto;
 }
 
-.topic {
-  clear: both;
-}
-
 .user-img {
-  float: left;
+  display: inline-block;
 }
 
 .user-img img {
@@ -45,9 +41,28 @@ code {
   padding: 10px;
   margin: 10px;
   background-color: #fff;
-  float: right;
   width: 90%;
   border-radius: 10px;
+  display: inline-block;
+}
+
+/* Topic page */
+.topic-body {
+  padding: 10px;
+  margin: 10px;
+  background-color: #fff;
+  width: 90%;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+/* Comment page */
+.comment-body {
+  padding: 10px;
+  margin: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  display: inline-block;
 }
 
 /* User page */
