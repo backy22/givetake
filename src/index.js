@@ -17,26 +17,22 @@ import store from './store';
 class App extends React.Component {
   render() {
     return(
-      <div>
-      <BrowserRouter>
-        <div>
-          <Switch>
-            <Route exact path={'/'} component={TopicList} />
-            <Route path={'/topic/:id'} component={Topic} />
-            <Route path={'/user/:uid'} component={User} />
-            <Route path= {'/signin'} component={SignIn} />
-            <Route path= {'/add-topic'} component={AddTopic} />
-          </Switch>
-        </div>
-      </BrowserRouter>
-      </div>
+      <Switch>
+        <Route exact path={'/'} component={TopicList} />
+        <Route path={'/topic/:id'} component={Topic} />
+        <Route path={'/user/:uid'} component={User} />
+        <Route path= {'/signin'} component={SignIn} />
+        <Route path= {'/add-topic'} component={AddTopic} />
+      </Switch>
     );
   }
 }
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 )

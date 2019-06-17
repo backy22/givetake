@@ -10,26 +10,9 @@ import { fetchUser } from '../actions/authActions';
 import { fetchUsers } from '../actions/userActions';
 import PropTypes from 'prop-types';
 import CommentForm from './CommentForm';
+import {getUserImg, getUserName} from '../utility.js';
 
 class Comment extends React.Component {
-
-  getUserImg(uid){
-    let user = this.props.users.users.filter(e => e.uid === uid)[0]
-    if (user && user.photo_url){
-      return user.photo_url
-    }else{
-      return null
-    }
-  }
-
-  getUserName(uid){
-    let user = this.props.users.users.filter(e => e.uid === uid)[0]
-    if (user && user.name){
-      return user.name
-    }else{
-      return null
-    }
-  }
 
   render() {
     const comments = this.props.topic.comments;
@@ -44,9 +27,9 @@ class Comment extends React.Component {
           <div className="comment">
             <Link to={"/user/" + comments[key].uid}>
               <div className="user-img">
-                <img src={this.getUserImg(comments[key].uid)} />
+                <img src={getUserImg(this.props.users.users.filter(e => e.uid === comments[key].uid)[0])} />
                 <div className="user-name">
-                  {this.getUserName(comments[key].uid)}
+                  {getUserName(this.props.users.users.filter(e => e.uid === comments[key].uid)[0])}
                 </div>
               </div>
             </Link>

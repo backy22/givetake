@@ -10,36 +10,18 @@ import { fetchUser } from '../actions/authActions';
 import { fetchUsers } from '../actions/userActions';
 import PropTypes from 'prop-types';
 import Comment from './Comment';
+import {getUserImg, getUserName} from '../utility.js';
 
 class Topic extends React.Component {
   handleToTopicListPage = () => {
     this.props.history.push('/')
   }
 
-  componentWillMount(){
+  componentDidMount(){
     this.props.fetchTopics();
     this.props.fetchUsers();
     this.props.fetchUser();
   }
-
-  getUserImg(topic){
-    let user = this.props.users.users.filter(e => e.uid === topic.uid)[0]
-    if (user && user.photo_url){
-      return user.photo_url
-    }else{
-      return null
-    }
-  }
-
-  getUserName(topic){
-    let user = this.props.users.users.filter(e => e.uid === topic.uid)[0]
-    if (user && user.name){
-      return user.name
-    }else{
-      return null
-    }
-  }
-
 
   render(){
     const params = this.props.match
@@ -57,9 +39,9 @@ class Topic extends React.Component {
             <div className="topic">
               <Link to={"/user/" + topic.uid} >
                 <div className="user-img">
-                  <img src={this.getUserImg(topic)} />
+                  <img src={getUserImg(this.props.users.users.filter(e => e.uid === topic.uid)[0])} />
                   <div className="user-name">
-                    {this.getUserName(topic)}
+                    {getUserName(this.props.users.users.filter(e => e.uid === topic.uid)[0])}
                   </div>
                 </div>
               </Link>
@@ -95,5 +77,5 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Topic);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Topic));
 

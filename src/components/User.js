@@ -23,7 +23,7 @@ class User extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentWillMount(){
+  componentDidMount(){
     this.props.fetchTopics();
     this.props.fetchUsers();
     this.props.fetchUser();
@@ -60,16 +60,20 @@ class User extends React.Component {
     let filtered_topics = topics.filter(e => e.uid === uid)
   
     return (
+
       <div className="user-page">
         <Button className="button" onClick={this.handleToTopicListPage}>
           Topic List
         </ Button>
+       {user && (
         <div className="profile">
           <div className="user-img">
-            <img src={user.photo_url} />
+            <div>
+              <img src={user.photo_url} />
             <div className="user-name">
               {user.name}
             </div>
+              </div>
           </div>
           <div className="likes">
             ❤
@@ -82,6 +86,7 @@ class User extends React.Component {
             value={this.state.profile_text}
           />
         </div>
+       )}
         <button type="submit" onClick={e => this.handleSubmit(e,user.id)}>Submit</button>
         {filtered_topics.map((topic) =>
           <Link to={"/topic/" + topic.id}>

@@ -1,10 +1,13 @@
 import React from 'react';
 import * as firebase from 'firebase';
-import { topicsRef, usersRef, authRef } from "../config/firebase";
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux'
 import { fetchTopics, addTopic } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
+import { makeStyles } from '@material-ui/core/styles';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
+
 
 class AddTopic extends React.Component {
   constructor(props) {
@@ -28,7 +31,7 @@ class AddTopic extends React.Component {
       title: '',
       text: ''
     });
-    var user = authRef.currentUser;
+    var user = this.props.auth
   
     const topic = {
       title: this.state.title,
@@ -36,6 +39,7 @@ class AddTopic extends React.Component {
       uid: user.uid
     }
     this.props.addTopic(topic);
+    this.props.history.push('/')
   }
 
   handleToTopicListPage = () => {
@@ -48,20 +52,28 @@ class AddTopic extends React.Component {
         <Button onClick={this.handleToTopicListPage}>
           Topic List
         </Button>
-        <input
-          name="title"
-          type="text"
-          placeholder="Write the title of your title"
-          onChange={ this.handleChange }
-          value={ this.state.title }
-        />
-        <input
-          name="text"
-          type="text"
-          placeholder="Write the title of your text"
-          onChange={ this.handleChange }
-          value={ this.state.text }
-        />
+      <TextField
+        name="title"
+        type="text"
+        id="outlined-disabled"
+        label="Topic title"
+        defaultValue="Hello World"
+        margin="normal"
+        variant="outlined"
+        onChange={ this.handleChange }
+        value={ this.state.title }
+      />
+      <TextField
+        name="text"
+        type="text"
+        id="outlined-disabled"
+        label="Explain"
+        defaultValue="Hello World"
+        margin="normal"
+        variant="outlined"
+        onChange={ this.handleChange }
+        value={ this.state.text }
+      />
         <button
           type="submit"
           onClick={ this.handleSubmit }
@@ -77,4 +89,4 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps, {addTopic})(AddTopic);
+export default connect(mapStateToProps, {addTopic, fetchUser})(AddTopic);

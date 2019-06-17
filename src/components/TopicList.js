@@ -8,17 +8,19 @@ import { fetchTopics } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
 import { fetchUsers } from '../actions/userActions';
 import PropTypes from 'prop-types';
+import {getUserImg, getUserName} from '../utility.js';
 
 class TopicList extends React.Component {
   constructor(props) {
     super(props);
-
     this.handleToSignInPage = this.handleToSignInPage.bind(this);
     this.handleToAddTopicPage = this.handleToAddTopicPage.bind(this);
+    this.handleToTopicPage = this.handleToTopicPage.bind(this);
+    this.handleToUserPage = this.handleToUserPage.bind(this);
     this.handleToMyPage = this.handleToMyPage.bind(this);
   }
 
-  componentWillMount(){
+  componentDidMount(){
     this.props.fetchTopics();
     this.props.fetchUsers();
     this.props.fetchUser();
@@ -32,29 +34,34 @@ class TopicList extends React.Component {
     this.props.history.push('/add-topic')
   }
 
+  handleToTopicPage = (topic) => {
+    this.props.history.push('/topic/'+topic.id)
+  }
+
+  handleToUserPage = (topic) => {
+    this.props.history.push('/user/'+topic.uid)
+  }
+
   handleToMyPage = () => {
     var user = this.props.current_user;
     this.props.history.push('/user/'+ user.uid)
   }
 
-  getUserImg(topic){
-    let user = this.props.users.users.filter(e => e.uid === topic.uid)[0]
-    if (user && user.photo_url){
-      return user.photo_url
-    }else{
-      return null
-    }
-  }
-
   render(){
     const topics = this.props.topics.topics.map(topic =>(
       <div className="topic">
-        <div className="user-img">
-          <img src={this.getUserImg(topic)} />
-        </div>
+        <Link onClick={this.handleToUserPage.bind(this, topic)}> 
+          <div className="user-img">
+            <img src={getUserImg(this.props.users.users.filter(e => e.uid === topic.uid)[0])} />
+            <div className="user-name">
+              {getUserName(this.props.users.users.filter(e => e.uid === topic.uid)[0])}
+            </div>
+          </div>
+        </Link>
         <div className="topic-title">
-          <Link to={"/topic/" + topic.id}>{topic.title}</Link>
-          <Link to={"/user/" + topic.uid}>{topic.uid}</Link>
+          <div onClick={this.handleToTopicPage.bind(this, topic)}>
+            {topic.title}
+          </div>
         </div>
       </div>
     ));
@@ -106,5 +113,5 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopicList);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopicList));
 

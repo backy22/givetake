@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { addComment } from '../actions/commentActions';
-import { topicsRef, usersRef, authRef } from "../config/firebase";
+import { fetchUser } from '../actions/authActions';
 
 class CommentForm extends Component {
   constructor(props) {
@@ -29,7 +29,7 @@ class CommentForm extends Component {
       uid: '',
       topic_id: ''
     });
-    var user = authRef.currentUser;
+    var user = this.props.auth;
 
     const comment = {
       comment: this.state.comment,
@@ -69,5 +69,5 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps, {addComment})(CommentForm);
+export default connect(mapStateToProps, {addComment, fetchUser})(CommentForm);
 
