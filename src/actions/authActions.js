@@ -10,15 +10,27 @@ export const fetchUser = () => dispatch => {
         payload: user
       });
 
-      usersRef.orderByChild('uid').startAt(user.uid).endAt(user.uid).limitToFirst(1).on('value', snap => { 
-        if (snap.val()){
-          const key = Object.keys(snap.val())[0];
-          let exist_user = snap.val()[key];
-          firebaseDb.ref(`users/${key}`).update({name: user.displayName, email: user.email, photo_url: user.photoURL, provider_id: user.providerData[0].providerId});
+      usersRef.where('uid', '==', user.uid).get().then(snap => {
+        if (snap.size > 0){
+          //TODO update user data
+          // snap.docs[0].set({
+          //   uid: user.uid, 
+          //   name: user.displayName,
+          //   email: user.email, 
+          //   photo_url: user.photoURL, 
+          //   provider_id: user.providerData[0].providerId
+          // },{merge: true})
         }else{
-          usersRef.push().set({uid: user.uid, name: user.displayName, email: user.email, photo_url: user.photoURL, provider_id: user.providerData[0].providerId});
+          usersRef.add({
+            uid: user.uid, 
+            name: user.displayName, 
+            email: user.email, 
+            photo_url: user.photoURL, 
+            provider_id: user.providerData[0].providerId
+          });
         }
       });
+
     } else {
       dispatch({
         type: FETCH_USER,

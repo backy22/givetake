@@ -1,7 +1,28 @@
 import { firebaseDb } from "../config/firebase";
-import { ADD_COMMENT } from './types';
+import { FETCH_COMMENTS, ADD_COMMENT } from './types';
 
-export const addComment = (newComment) => dispatch => {
-  firebaseDb.ref(`topics/${newComment.topic_id}/comments`).push(newComment);
+export const fetchComments = (topic) => dispatch => {
+  let previousComments = []
+  firebaseDb.collection(`topics/${topic.id}/comments`).onSnapshot(snap => {
+    if (snap.size > 0){
+      snap.docs.map(doc => {
+        previousComments.push({
+          id: doc.id,
+          comment: doc.data().comment,
+          uid: doc.data().uid,
+        });
+      })
+    }
+
+    dispatch({
+      type: FETCH_COMMENTS,
+      comments: previousComments
+    });
+
+  });
+};
+
+export const addComment = (newComment,topic) => dispatch => {
+  firebaseDb.collection(`topics/${topic.id}/comments`).add(newComment);
 };
 

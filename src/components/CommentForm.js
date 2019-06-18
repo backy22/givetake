@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addComment } from '../actions/commentActions';
+import { addComment, fetchComments } from '../actions/commentActions';
 import { fetchUser } from '../actions/authActions';
+import { fetchTopics } from '../actions/topicActions';
+import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { withRouter } from 'react-router';
 
 class CommentForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       comment: '',
-      uid: '',
-      topic_id: ''
+      uid: ''
     };
 
     this.onChange = this.onChange.bind(this);
@@ -26,18 +28,17 @@ class CommentForm extends Component {
 
     this.setState({
       comment: '',
-      uid: '',
-      topic_id: ''
+      uid: ''
     });
     var user = this.props.auth;
 
     const comment = {
       comment: this.state.comment,
-      uid: user.uid,
-      topic_id: this.props.topic.id
+      uid: user.uid
     };
 
-    this.props.addComment(comment);
+    this.props.addComment(comment,this.props.topic);
+    this.props.fetchComments(this.props.topic);
   }
 
   render() {
@@ -62,12 +63,13 @@ class CommentForm extends Component {
 }
 
 CommentForm.propTypes = {
-  addComment: PropTypes.func.isRequired
+  addComment: PropTypes.func.isRequired,
+  fetchComments: PropTypes.func.isRequired,
+  fetchUser: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
   return state;
 };
 
-export default connect(mapStateToProps, {addComment, fetchUser})(CommentForm);
-
+export default withRouter(connect(mapStateToProps, {addComment, fetchUser, fetchComments})(CommentForm));

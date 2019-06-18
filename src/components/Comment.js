@@ -8,14 +8,20 @@ import { topicsRef, usersRef, authRef } from "../config/firebase";
 import { fetchTopics } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
 import { fetchUsers } from '../actions/userActions';
+import { fetchComments } from '../actions/commentActions';
 import PropTypes from 'prop-types';
 import CommentForm from './CommentForm';
 import {getUserImg, getUserName} from '../utility.js';
 
 class Comment extends React.Component {
 
+  componentDidMount(){
+    this.props.fetchComments(this.props.topic);
+  }
+
   render() {
-    const comments = this.props.topic.comments;
+    const topic = this.props.topic;
+    const comments = this.props.comments.comments;
     if (comments == null){
       return (
         <CommentForm topic={this.props.topic} />
@@ -36,28 +42,22 @@ class Comment extends React.Component {
             <div className="comment-body">{comments[key].comment}</div>
           </div>
         ))}
-        <CommentForm topic={this.props.topic}/>
+      <CommentForm topic={this.props.topic} />
       </div>
     );
   }
 }
 
 Comment.propTypes = {
+  fetchComments: PropTypes.func.isRequired,
   fetchUsers: PropTypes.func.isRequired,
   fetchUser: PropTypes.func.isRequired,
-  users: PropTypes.array.isRequired,
+  users: PropTypes.array.isRequired
 };
 
 const mapStateToProps = (state) => {
     return state;
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchUsers: () => { dispatch(fetchUsers()) },
-    fetchUser: () => { dispatch(fetchUser()) }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Comment);
+export default connect(mapStateToProps, {fetchComments, fetchUsers, fetchUser})(Comment);
 
