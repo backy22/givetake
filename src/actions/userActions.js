@@ -1,5 +1,5 @@
 import { usersRef } from "../config/firebase";
-import { FETCH_USERS } from './types';
+import { FETCH_USERS, UPDATE_USER } from './types';
 
 export const fetchUsers = () => dispatch => {
   let previousUsers = []
@@ -26,3 +26,6 @@ export const fetchUsers = () => dispatch => {
   });
 };
 
+export const updateUser = (user) => dispatch => {
+  usersRef.doc(user.id).set(user)
+}

@@ -1,5 +1,5 @@
 import { topicsRef, authRef } from "../config/firebase";
-import { FETCH_TOPICS, ADD_TOPIC } from './types';
+import { FETCH_TOPICS, ADD_TOPIC, UPDATE_TOPIC } from './types';
 
 export const fetchTopics = () => dispatch => {
   let previousTopics = []
@@ -28,3 +28,6 @@ export const addTopic = (newTopic) => dispatch => {
   topicsRef.add(newTopic);
 };
 
+export const updateTopic = (topic) => dispatch => {
+  topicsRef.doc(topic.id).update({title: topic.title, text: topic.text})
+};

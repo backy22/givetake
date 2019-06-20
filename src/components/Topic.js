@@ -5,14 +5,27 @@ import { withRouter } from 'react-router';
 import Button from '@material-ui/core/button';
 import { connect } from 'react-redux'
 import { topicsRef, usersRef, authRef } from "../config/firebase";
-import { fetchTopics } from '../actions/topicActions';
+import { fetchTopics, updateTopic } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
 import { fetchUsers } from '../actions/userActions';
 import PropTypes from 'prop-types';
 import Comment from './Comment';
 import {getUserImg, getUserName} from '../utility.js';
+import {Edit, Trash, Check} from '@material-ui/icons';
 
 class Topic extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: '',
+      text: '',
+      editing: false
+    }
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   handleToTopicListPage = () => {
     this.props.history.push('/')
   }
@@ -23,18 +36,70 @@ class Topic extends React.Component {
     this.props.fetchUser();
   }
 
+  startEditing = () => {
+    this.setState({
+      editing: true
+    });
+  }
+
+  handleChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  handleSubmit = (e,topic) => {
+    this.setState({
+      editing: false
+    });
+    topic['title'] = this.state.title
+    topic['text'] = this.state.text
+    console.log(topic)
+    this.props.updateTopic(topic) 
+  }
+
   render(){
     const params = this.props.match
     let topic_id = params.params.id
     let topics = this.props.topics.topics
-    let filtered_topics = topics.filter(e => e.id === topic_id);
+    let topic = topics.filter(e => e.id === topic_id)[0];
+    let editButton;
+    let topicTitle;
+    let topicText;
+    if (topic){
+      if (this.state.editing){
+        topicTitle = (
+          <input
+            name="title"
+            type="text"
+            onChange={this.handleChange}
+            defaultValue={topic.title}
+            value={this.state.title}
+          />
+        );
+        topicText = (
+          <input
+            name="text"
+            type="text"
+            onChange={this.handleChange}
+            defaultValue={topic.text}
+            value={this.state.text}
+          />
+        );
+        editButton = (<Check onClick={(e) => this.handleSubmit(e,topic)} />);
+      }else{
+        topicTitle = (<div className="topic-title">{topic.title}</div>);
+        topicText = (<div className="topic-body">{topic.text}</div>);
+        editButton = (<Edit onClick={() => this.startEditing()} />);
+      }
+    }
 
     return (
       <div>
         <Button onClick={this.handleToTopicListPage}>
           Home
         </Button>
-        {filtered_topics.map((topic) =>
+          {topic && (
           <div>
             <div className="topic">
               <Link to={"/user/" + topic.uid} >
@@ -45,12 +110,13 @@ class Topic extends React.Component {
                   </div>
                 </div>
               </Link>
-              <div className="topic-title">{topic.title}</div>
-              <div className="topic-body">{topic.text}</div>
+              {topicTitle}
+              {topicText}
+              {editButton}
             </div>
             <div><Comment topic={topic} /></div>
           </div>
-        )}
+          )}
       </div>
     );
   }
@@ -69,13 +135,5 @@ const mapStateToProps = (state) => {
   return state;
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchTopics: () => { dispatch(fetchTopics()) },
-    fetchUsers: () => { dispatch(fetchUsers()) },
-    fetchUser: () => { dispatch(fetchUser()) }
-  }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Topic));
+export default withRouter(connect(mapStateToProps, {fetchTopics, fetchUsers, fetchUser, updateTopic})(Topic));
 

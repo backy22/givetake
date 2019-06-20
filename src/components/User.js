@@ -8,15 +8,17 @@ import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux'
 import { fetchTopics } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
-import { fetchUsers } from '../actions/userActions';
+import { fetchUsers, updateUser } from '../actions/userActions';
 import PropTypes from 'prop-types';
+import {Edit, Trash, Check} from '@material-ui/icons';
 
 class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: '',
-      profile_text: ''
+      profile_text: '',
+      editing: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -33,21 +35,25 @@ class User extends React.Component {
     this.props.history.push('/')
   }
 
+  startEditing = () => {
+    this.setState({
+      editing: true
+    });
+  }
+
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
     });
   }
 
-  handleSubmit = (e,key) => {
+  handleSubmit = (e,user) => {
     this.setState({
-      name: '',
-      profile_text: ''
+      editing: false
     });
-    firebaseDb.ref(`users/${key}`).update({
-      name: this.state.name,
-      profile_text: this.state.profile_text
-    });
+    user['name'] = this.state.name
+    user['profile_text'] = this.state.profile_text
+    this.props.updateUser(user) 
   }
 
   render(){
@@ -58,36 +64,58 @@ class User extends React.Component {
     let user = users.filter(e => e.uid === uid)[0]
     let current_user = this.props.auth
     let filtered_topics = topics.filter(e => e.uid === uid)
+    let userName;
+    let profileText;
+    let editButton;
+
+    if (user){
+      if (this.state.editing){
+        userName = (
+          <input
+            name="name"
+            type="text"
+            onChange={this.handleChange}
+            defaultValue={user.name}
+            value={this.state.name}
+          />
+        );
+        profileText = (
+          <input
+            name="profile_text"
+            type="text"
+            onChange={this.handleChange}
+            defaultValue={user.profile_text}
+            value={this.state.profile_text}
+          />
+        );
+        editButton = (<Check onClick={(e) => this.handleSubmit(e,user)} />);
+      }else{
+        userName = (<div className="user-name">{user.name}</div>);
+        profileText = (<div>{user.profile_text}</div>);
+        editButton = (<Edit onClick={() => this.startEditing()} />);
+      }
+    }
   
     return (
-
       <div className="user-page">
         <Button className="button" onClick={this.handleToTopicListPage}>
           Topic List
         </ Button>
-       {user && (
-        <div className="profile">
-          <div className="user-img">
-            <div>
-              <img src={user.photo_url} />
-            <div className="user-name">
-              {user.name}
-            </div>
+        {user && (
+          <div>
+            <div className="profile">
+              <div className="user-img">
+                <img src={user.photo_url} />
+                {userName}
               </div>
+            </div>
+            <div className="likes">❤</div>
+            <div>
+              {profileText}
+              {editButton}
           </div>
-          <div className="likes">
-            ❤
           </div>
-          <input
-            name="profile_text"
-            type="text"
-            onChange={ this.handleChange }
-            placeholder={user.profile_text}
-            value={this.state.profile_text}
-          />
-        </div>
-       )}
-        <button type="submit" onClick={e => this.handleSubmit(e,user.id)}>Submit</button>
+        )}
         {filtered_topics.map((topic) =>
           <Link to={"/topic/" + topic.id}>
             <div className="topic-title">{topic.title}</div>
@@ -112,12 +140,4 @@ const mapStateToProps = (state) => {
     return state;
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    fetchTopics: () => { dispatch(fetchTopics()) },
-    fetchUsers: () => { dispatch(fetchUsers()) },
-    fetchUser: () => { dispatch(fetchUser()) }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(User);
+export default connect(mapStateToProps, {fetchTopics, fetchUsers, fetchUser, updateUser})(User);
