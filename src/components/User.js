@@ -1,16 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
 import AddTopic from './AddTopic';
 import { firebaseDb, topicsRef, usersRef, authRef } from "../config/firebase";
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux'
-import { fetchTopics } from '../actions/topicActions';
+import { fetchTopics, updateTopic } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
 import { fetchUsers, updateUser } from '../actions/userActions';
 import PropTypes from 'prop-types';
-import {Edit, Trash, Check} from '@material-ui/icons';
+import {Edit, Check} from '@material-ui/icons';
+import Switch from '@material-ui/core/Switch';
 
 class User extends React.Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class User extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCheckChange = this.handleCheckChange.bind(this);
   }
 
   componentDidMount(){
@@ -56,6 +58,12 @@ class User extends React.Component {
     this.props.updateUser(user) 
   }
 
+  handleCheckChange = (e,topic) => {
+    topic['active'] = e.target.checked
+    this.props.updateTopic(topic)
+    this.props.fetchTopics();
+  };
+
   render(){
     const params = this.props.match
     let uid = params.params.uid
@@ -64,6 +72,8 @@ class User extends React.Component {
     let user = users.filter(e => e.uid === uid)[0]
     let current_user = this.props.auth
     let filtered_topics = topics.filter(e => e.uid === uid)
+    let give_topics = filtered_topics.filter(e => e.type === "give")  
+    let take_topics = filtered_topics.filter(e => e.type == "take")
     let userName;
     let profileText;
     let editButton;
@@ -103,6 +113,7 @@ class User extends React.Component {
         </ Button>
         {user && (
           <div>
+            <div>GIVE{give_topics.length}</div>
             <div className="profile">
               <div className="user-img">
                 <img src={user.photo_url} />
@@ -113,13 +124,20 @@ class User extends React.Component {
             <div>
               {profileText}
               {editButton}
-          </div>
+            </div>
+            <div>TAKE{take_topics.length}</div>
           </div>
         )}
         {filtered_topics.map((topic) =>
-          <Link to={"/topic/" + topic.id}>
-            <div className="topic-title">{topic.title}</div>
-          </Link>
+          <div>
+            <Link to={"/topic/" + topic.id}>
+              <div className="topic-title">{topic.title} {topic.type}</div>
+            </Link>
+            <Switch
+              checked={topic.active ? true : false}
+              onChange={(e) => this.handleCheckChange(e,topic)}
+            />
+          </div>
         )}
       </div>
     );
@@ -140,4 +158,4 @@ const mapStateToProps = (state) => {
     return state;
 }
 
-export default connect(mapStateToProps, {fetchTopics, fetchUsers, fetchUser, updateUser})(User);
+export default connect(mapStateToProps, {fetchTopics, updateTopic, fetchUsers, fetchUser, updateUser})(User);

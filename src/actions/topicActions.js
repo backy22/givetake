@@ -10,6 +10,8 @@ export const fetchTopics = () => dispatch => {
           id: doc.id,
           title: doc.data().title,
           text: doc.data().text,
+          type: doc.data().type,
+          active: doc.data().active,
           uid: doc.data().uid,
           comments: doc.data().comments
         });
@@ -29,5 +31,5 @@ export const addTopic = (newTopic) => dispatch => {
 };
 
 export const updateTopic = (topic) => dispatch => {
-  topicsRef.doc(topic.id).update({title: topic.title, text: topic.text})
+  topicsRef.doc(topic.id).update({title: topic.title, text: topic.text, active: topic.active})
 };

@@ -61,7 +61,7 @@ class TopicList extends React.Component {
         </Link>
         <div className="topic-title">
           <div onClick={this.handleToTopicPage.bind(this, topic)}>
-            {topic.title}
+            {topic.title} {topic.type}
           </div>
         </div>
       </div>

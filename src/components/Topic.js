@@ -11,7 +11,7 @@ import { fetchUsers } from '../actions/userActions';
 import PropTypes from 'prop-types';
 import Comment from './Comment';
 import {getUserImg, getUserName} from '../utility.js';
-import {Edit, Trash, Check} from '@material-ui/icons';
+import {Edit, Check} from '@material-ui/icons';
 
 class Topic extends React.Component {
   constructor(props) {
@@ -54,7 +54,6 @@ class Topic extends React.Component {
     });
     topic['title'] = this.state.title
     topic['text'] = this.state.text
-    console.log(topic)
     this.props.updateTopic(topic) 
   }
 
@@ -111,6 +110,7 @@ class Topic extends React.Component {
                 </div>
               </Link>
               {topicTitle}
+              <div>{topic.type}</div>
               {topicText}
               {editButton}
             </div>

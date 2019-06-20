@@ -7,6 +7,7 @@ import { fetchUser } from '../actions/authActions';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
 
 
 class AddTopic extends React.Component {
@@ -15,7 +16,8 @@ class AddTopic extends React.Component {
 
     this.state = {
       title: '',
-      text: ''
+      text: '',
+      type: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -29,13 +31,15 @@ class AddTopic extends React.Component {
   handleSubmit = e => {
     this.setState({
       title: '',
-      text: ''
+      text: '',
+      type: ''
     });
     var user = this.props.auth
   
     const topic = {
       title: this.state.title,
       text: this.state.text,
+      type: this.state.type,
       uid: user.uid
     }
     this.props.addTopic(topic);
@@ -52,12 +56,20 @@ class AddTopic extends React.Component {
         <Button onClick={this.handleToTopicListPage}>
           Topic List
         </Button>
+      <Select
+        name="type"
+        label="select type"
+        value={this.state.type}
+        onChange={this.handleChange}
+      >
+        <MenuItem value="give">GIVE</MenuItem>
+        <MenuItem value="take">TAKE</MenuItem>
+      </Select>
       <TextField
         name="title"
         type="text"
         id="outlined-disabled"
         label="Topic title"
-        defaultValue="Hello World"
         margin="normal"
         variant="outlined"
         onChange={ this.handleChange }
@@ -68,7 +80,6 @@ class AddTopic extends React.Component {
         type="text"
         id="outlined-disabled"
         label="Explain"
-        defaultValue="Hello World"
         margin="normal"
         variant="outlined"
         onChange={ this.handleChange }
