@@ -46,45 +46,38 @@ class AddTopic extends React.Component {
     this.props.history.push('/')
   }
 
-  handleToTopicListPage = () => {
-    this.props.history.push('/')
-  }
-
   render() {
     return (
       <div className="AddTopic">
-        <Button onClick={this.handleToTopicListPage}>
-          Topic List
-        </Button>
-      <Select
-        name="type"
-        label="select type"
-        value={this.state.type}
-        onChange={this.handleChange}
-      >
-        <MenuItem value="give">GIVE</MenuItem>
-        <MenuItem value="take">TAKE</MenuItem>
-      </Select>
-      <TextField
-        name="title"
-        type="text"
-        id="outlined-disabled"
-        label="Topic title"
-        margin="normal"
-        variant="outlined"
-        onChange={ this.handleChange }
-        value={ this.state.title }
-      />
-      <TextField
-        name="text"
-        type="text"
-        id="outlined-disabled"
-        label="Explain"
-        margin="normal"
-        variant="outlined"
-        onChange={ this.handleChange }
-        value={ this.state.text }
-      />
+        <Select
+          name="type"
+          label="select type"
+          value={this.state.type}
+          onChange={this.handleChange}
+        >
+          <MenuItem value="give">GIVE</MenuItem>
+          <MenuItem value="take">TAKE</MenuItem>
+        </Select>
+        <TextField
+          name="title"
+          type="text"
+          id="outlined-disabled"
+          label="Topic title"
+          margin="normal"
+          variant="outlined"
+          onChange={ this.handleChange }
+          value={ this.state.title }
+        />
+        <TextField
+          name="text"
+          type="text"
+          id="outlined-disabled"
+          label="Explain"
+          margin="normal"
+          variant="outlined"
+          onChange={ this.handleChange }
+          value={ this.state.text }
+        />
         <button
           type="submit"
           onClick={ this.handleSubmit }

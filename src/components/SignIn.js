@@ -31,17 +31,10 @@ class SignIn extends React.Component {
     authRef.signOut();
   }
 
-  handleToTopicListPage = () => {
-    this.props.history.push('/')
-  }
-
    render() {
     if (this.state.loading) return <div>loading</div>;
     return ( 
       <div>
-        <Button onClick={this.handleToTopicListPage}>
-          Home
-        </Button>
         Username: {this.props.auth && this.props.auth.displayName}
         <br />
         {this.props.auth ?

@@ -10,8 +10,7 @@ import { fetchUser } from '../actions/authActions';
 import { fetchUsers } from '../actions/userActions';
 import { fetchComments } from '../actions/commentActions';
 import PropTypes from 'prop-types';
-import CommentForm from './CommentForm';
-import {getUserImg, getUserName} from '../utility.js';
+import { getUserImg, getUserName } from '../utility.js';
 
 class Comment extends React.Component {
 
@@ -23,9 +22,7 @@ class Comment extends React.Component {
     const topic = this.props.topic;
     const comments = this.props.comments.comments;
     if (comments == null){
-      return (
-        <CommentForm topic={this.props.topic} />
-      );
+      return null
     }
     return (
       <div>
@@ -42,7 +39,6 @@ class Comment extends React.Component {
             <div className="comment-body">{comments[key].comment}</div>
           </div>
         ))}
-      <CommentForm topic={this.props.topic} />
       </div>
     );
   }

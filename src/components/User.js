@@ -12,6 +12,7 @@ import { fetchUsers, updateUser } from '../actions/userActions';
 import PropTypes from 'prop-types';
 import {Edit, Check} from '@material-ui/icons';
 import Switch from '@material-ui/core/Switch';
+import Input from '@material-ui/core/Input';
 
 class User extends React.Component {
   constructor(props) {
@@ -33,12 +34,10 @@ class User extends React.Component {
     this.props.fetchUser();
   }
  
-  handleToTopicListPage = () => {
-    this.props.history.push('/')
-  }
-
-  startEditing = () => {
+  startEditing = (e,user) => {
     this.setState({
+      name: user.name,
+      profile_text: user.profile_text,
       editing: true
     });
   }
@@ -81,36 +80,39 @@ class User extends React.Component {
     if (user){
       if (this.state.editing){
         userName = (
-          <input
-            name="name"
-            type="text"
-            onChange={this.handleChange}
-            defaultValue={user.name}
-            value={this.state.name}
-          />
+          <div className="user-name">
+            <Input
+              name="name"
+              fullWidth
+              type="text"
+              onChange={this.handleChange}
+              defaultValue={user.name}
+              value={this.state.name}
+            />
+          </div>
         );
         profileText = (
-          <input
-            name="profile_text"
-            type="text"
-            onChange={this.handleChange}
-            defaultValue={user.profile_text}
-            value={this.state.profile_text}
-          />
+          <div className="profile-text">
+            <Input
+              name="profile_text"
+              fullWidth
+              type="text"
+              onChange={this.handleChange}
+              defaultValue={user.profile_text}
+              value={this.state.profile_text}
+            />
+          </div>
         );
         editButton = (<Check onClick={(e) => this.handleSubmit(e,user)} />);
       }else{
         userName = (<div className="user-name">{user.name}</div>);
-        profileText = (<div>{user.profile_text}</div>);
-        editButton = (<Edit onClick={() => this.startEditing()} />);
+        profileText = (<div className="profile-text">{user.profile_text}</div>);
+        editButton = (<Edit onClick={(e) => this.startEditing(e,user)} />);
       }
     }
   
     return (
       <div className="user-page">
-        <Button className="button" onClick={this.handleToTopicListPage}>
-          Topic List
-        </ Button>
         {user && (
           <div>
             <div>GIVE{give_topics.length}</div>
@@ -120,23 +122,24 @@ class User extends React.Component {
                 {userName}
               </div>
             </div>
-            <div className="likes">❤</div>
-            <div>
-              {profileText}
-              {editButton}
-            </div>
+            {editButton}
             <div>TAKE{take_topics.length}</div>
+            {profileText}
           </div>
         )}
         {filtered_topics.map((topic) =>
-          <div>
-            <Link to={"/topic/" + topic.id}>
-              <div className="topic-title">{topic.title} {topic.type}</div>
-            </Link>
-            <Switch
-              checked={topic.active ? true : false}
-              onChange={(e) => this.handleCheckChange(e,topic)}
-            />
+          <div className="user-topics">
+            <div className="topic-title">
+              <Link to={"/topic/" + topic.id}>
+                {topic.title}
+              </Link>
+              <span className={topic.type+"-type type-icon"}>{topic.type}</span>
+              <Switch
+                className="switch"
+                checked={topic.active ? true : false}
+                onChange={(e) => this.handleCheckChange(e,topic)}
+              />
+            </div>
           </div>
         )}
       </div>

@@ -6,6 +6,8 @@ import { fetchUser } from '../actions/authActions';
 import { fetchTopics } from '../actions/topicActions';
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
+import { Send } from '@material-ui/icons';
+import TextField from '@material-ui/core/TextField';
 
 class CommentForm extends Component {
   constructor(props) {
@@ -45,17 +47,17 @@ class CommentForm extends Component {
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          <div>
-            <label>Comment: </label>
-            <br />
-            <input
+          <div className="comment-form">
+            <TextField
               type="text"
+              fullWidth
               name="comment"
+              variant="outlined"
               onChange={this.onChange}
               value={this.state.comment}
             />
           </div>
-          <button type="submit">Submit</button>
+          <Send type="submit" />
         </form>
       </div>
     );

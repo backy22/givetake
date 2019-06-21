@@ -10,8 +10,10 @@ import { fetchUser } from '../actions/authActions';
 import { fetchUsers } from '../actions/userActions';
 import PropTypes from 'prop-types';
 import Comment from './Comment';
-import {getUserImg, getUserName} from '../utility.js';
-import {Edit, Check} from '@material-ui/icons';
+import CommentForm from './CommentForm';
+import { getUserImg, getUserName } from '../utility.js';
+import { Edit, Check } from '@material-ui/icons';
+import Input from '@material-ui/core/Input';
 
 class Topic extends React.Component {
   constructor(props) {
@@ -26,18 +28,16 @@ class Topic extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleToTopicListPage = () => {
-    this.props.history.push('/')
-  }
-
   componentDidMount(){
     this.props.fetchTopics();
     this.props.fetchUsers();
     this.props.fetchUser();
   }
 
-  startEditing = () => {
+  startEditing = (e,topic) => {
     this.setState({
+      title: topic.title,
+      text: topic.text,
       editing: true
     });
   }
@@ -68,53 +68,68 @@ class Topic extends React.Component {
     if (topic){
       if (this.state.editing){
         topicTitle = (
-          <input
-            name="title"
-            type="text"
-            onChange={this.handleChange}
-            defaultValue={topic.title}
-            value={this.state.title}
-          />
+          <div className="topic-title">
+            <div className="title-input">
+              <Input
+                name="title"
+                fullWidth
+                type="text"
+                onChange={this.handleChange}
+                defaultValue={topic.title}
+                value={this.state.title}
+              />
+            </div>
+            <span className={topic.type+"-type type-icon"}>{topic.type}</span>
+          </div>
         );
         topicText = (
-          <input
+          <div className="topic-body">
+          <Input
             name="text"
+            fullWidth
             type="text"
             onChange={this.handleChange}
             defaultValue={topic.text}
             value={this.state.text}
           />
+          </div>
         );
         editButton = (<Check onClick={(e) => this.handleSubmit(e,topic)} />);
       }else{
-        topicTitle = (<div className="topic-title">{topic.title}</div>);
+        topicTitle = (
+          <div className="topic-title">
+            {topic.title}
+            <span className={topic.type+"-type type-icon"}>{topic.type}</span>
+          </div>
+        );
         topicText = (<div className="topic-body">{topic.text}</div>);
-        editButton = (<Edit onClick={() => this.startEditing()} />);
+        editButton = (<Edit onClick={(e) => this.startEditing(e,topic)} />);
       }
     }
 
     return (
       <div>
-        <Button onClick={this.handleToTopicListPage}>
-          Home
-        </Button>
           {topic && (
           <div>
-            <div className="topic">
-              <Link to={"/user/" + topic.uid} >
+            <div className="topic-page">
+              <div className="topic">
                 <div className="user-img">
-                  <img src={getUserImg(this.props.users.users.filter(e => e.uid === topic.uid)[0])} />
-                  <div className="user-name">
-                    {getUserName(this.props.users.users.filter(e => e.uid === topic.uid)[0])}
-                  </div>
+                  <Link to={"/user/" + topic.uid} >
+                    <img src={getUserImg(this.props.users.users.filter(e => e.uid === topic.uid)[0])} />
+                    <div className="user-name">
+                      {getUserName(this.props.users.users.filter(e => e.uid === topic.uid)[0])}
+                    </div>
+                  </Link>
                 </div>
-              </Link>
-              {topicTitle}
-              <div>{topic.type}</div>
-              {topicText}
+                {topicTitle}
+              </div>
               {editButton}
+              {topicText}
             </div>
-            <div><Comment topic={topic} /></div>
+            <div className="comments"><Comment topic={topic} /></div>
+            <footer>
+              <CommentForm topic={this.props.topic} />
+            </footer>
           </div>
           )}
       </div>

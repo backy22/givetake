@@ -10,15 +10,54 @@ body {
   background: -webkit-linear-gradient(top, #F54EA2, #A94CAF);
   background: linear-gradient(to bottom, #F54EA2, #A94CAF);
   height: 100vh;
+  word-wrap: break-word;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+header {
+  text-align: center;
+}
+
+.logo {
+  height: 40px;
+  margin: 10px;
+}
+
+.signin {
+  position: absolute;
+  top: 5%;
+  right: 10%;
 }
 
 .button {
   color: #fff;
+}
+
+form {
+  padding: 10px;
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.type-icon {
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  margin-left: auto;
+}
+
+.give-type {
+  background: #F54EA2;
+}
+
+.take-type {
+  background: #42218E;
 }
 
 /* TopicList */
@@ -27,8 +66,13 @@ code {
   margin: 0 auto;
 }
 
+.topic {
+  display: flex;
+  margin-bottom: 10px;
+}
+
 .user-img {
-  display: inline-block;
+  margin-right: 10px;
 }
 
 .user-img img {
@@ -37,38 +81,101 @@ code {
   border-radius: 50%;
 }
 
+.user-img a {
+  text-decoration: none;
+}
+
+.user-name {
+  color: #fff;
+  width: 50px;
+  margin: 0 auto;
+}
+
 .topic-title {
-  padding: 10px;
-  margin: 10px;
+  padding: 15px;
+  margin: 10px 0;
   background-color: #fff;
-  width: 90%;
+  width: 100%;
   border-radius: 10px;
-  display: inline-block;
+  display: flex;
+  vertical-align: top;
 }
 
 /* Topic page */
+.topic-page {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.title-input {
+  width: 90%;
+  display: inline-block;
+}
+
 .topic-body {
   padding: 10px;
   margin: 10px;
   background-color: #fff;
-  width: 90%;
+  width: 95%;
   border-radius: 10px;
   display: inline-block;
+}
+
+.comments {
+  margin-top: 10px;
 }
 
 /* Comment page */
 .comment-body {
-  padding: 10px;
-  margin: 10px;
+  padding: 15px;
+  margin-left: 10px;
   background-color: #fff;
   border-radius: 10px;
   display: inline-block;
+  vertical-align: top;
+}
+
+.comment-form {
+  width: 100%;
+  margin-right: 10px;
 }
 
 /* User page */
-.profile-img img {
+.user-page {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.profile {
+  text-align: center;
+}
+
+.profile .user-img {
+  margin: 0;
+}
+
+.profile .user-img img {
   width: 100px;
   height: 100px;
+}
+
+.profile-text {
+  background: #fff;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.user-topics {
+  display: flex;
+}
+
+.user-page .topic-title {
+  margin-right: auto;
+  align-items: center;
+}
+
+.user-page .topic-title a {
+  text-decoration: none;
 }
 
 /* Footer */

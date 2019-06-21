@@ -13,7 +13,6 @@ import {getUserImg, getUserName} from '../utility.js';
 class TopicList extends React.Component {
   constructor(props) {
     super(props);
-    this.handleToSignInPage = this.handleToSignInPage.bind(this);
     this.handleToAddTopicPage = this.handleToAddTopicPage.bind(this);
     this.handleToTopicPage = this.handleToTopicPage.bind(this);
     this.handleToUserPage = this.handleToUserPage.bind(this);
@@ -26,10 +25,6 @@ class TopicList extends React.Component {
     this.props.fetchUser();
   }
 
-  handleToSignInPage = () => {
-    this.props.history.push('/signin')
-  }
-  
   handleToAddTopicPage = () => {
     this.props.history.push('/add-topic')
   }
@@ -51,28 +46,25 @@ class TopicList extends React.Component {
   render(){
     const topics = this.props.topics.topics.map(topic =>(
       <div className="topic">
-        <Link onClick={this.handleToUserPage.bind(this, topic)}> 
-          <div className="user-img">
+        <div className="user-img">
+          <Link onClick={this.handleToUserPage.bind(this, topic)}>
             <img src={getUserImg(this.props.users.users.filter(e => e.uid === topic.uid)[0])} />
             <div className="user-name">
               {getUserName(this.props.users.users.filter(e => e.uid === topic.uid)[0])}
             </div>
-          </div>
-        </Link>
+          </Link>
+        </div>
         <div className="topic-title">
           <div onClick={this.handleToTopicPage.bind(this, topic)}>
-            {topic.title} {topic.type}
+            {topic.title}
           </div>
+          <span className={topic.type+"-type type-icon"}>{topic.type}</span>
         </div>
       </div>
     ));
 
     return (
     <div>
-      <Button onClick={this.handleToSignInPage}>
-        Sign In
-      </Button>
-
       <BrowserRouter>
         <div className="topic-list">
           {topics}
