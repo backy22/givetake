@@ -84,14 +84,14 @@ class Topic extends React.Component {
         );
         topicText = (
           <div className="topic-body">
-          <Input
-            name="text"
-            fullWidth
-            type="text"
-            onChange={this.handleChange}
-            defaultValue={topic.text}
-            value={this.state.text}
-          />
+            <Input
+              name="text"
+              fullWidth
+              type="text"
+              onChange={this.handleChange}
+              defaultValue={topic.text}
+              value={this.state.text}
+            />
           </div>
         );
         editButton = (<Check onClick={(e) => this.handleSubmit(e,topic)} />);
@@ -128,7 +128,7 @@ class Topic extends React.Component {
             </div>
             <div className="comments"><Comment topic={topic} /></div>
             <footer>
-              <CommentForm topic={this.props.topic} />
+              <CommentForm topic={topic} />
             </footer>
           </div>
           )}

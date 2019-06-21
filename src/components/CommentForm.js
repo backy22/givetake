@@ -8,6 +8,7 @@ import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
 import { Send } from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 class CommentForm extends Component {
   constructor(props) {
@@ -38,6 +39,7 @@ class CommentForm extends Component {
       comment: this.state.comment,
       uid: user.uid
     };
+    console.log(this.props.topic);
 
     this.props.addComment(comment,this.props.topic);
     this.props.fetchComments(this.props.topic);
@@ -57,7 +59,7 @@ class CommentForm extends Component {
               value={this.state.comment}
             />
           </div>
-          <Send type="submit" />
+          <Button type="submit"><Send /></Button>
         </form>
       </div>
     );

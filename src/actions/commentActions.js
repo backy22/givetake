@@ -23,6 +23,7 @@ export const fetchComments = (topic) => dispatch => {
 };
 
 export const addComment = (newComment,topic) => dispatch => {
+  console.log(topic)
   firebaseDb.collection(`topics/${topic.id}/comments`).add(newComment);
 };
 

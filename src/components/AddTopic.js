@@ -9,7 +9,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 
-
 class AddTopic extends React.Component {
   constructor(props) {
     super(props);
@@ -40,7 +39,8 @@ class AddTopic extends React.Component {
       title: this.state.title,
       text: this.state.text,
       type: this.state.type,
-      uid: user.uid
+      uid: user.uid,
+      active: true
     }
     this.props.addTopic(topic);
     this.props.history.push('/')
@@ -48,42 +48,49 @@ class AddTopic extends React.Component {
 
   render() {
     return (
-      <div className="AddTopic">
-        <Select
-          name="type"
-          label="select type"
-          value={this.state.type}
-          onChange={this.handleChange}
-        >
-          <MenuItem value="give">GIVE</MenuItem>
-          <MenuItem value="take">TAKE</MenuItem>
-        </Select>
-        <TextField
-          name="title"
-          type="text"
-          id="outlined-disabled"
-          label="Topic title"
-          margin="normal"
-          variant="outlined"
-          onChange={ this.handleChange }
-          value={ this.state.title }
-        />
-        <TextField
-          name="text"
-          type="text"
-          id="outlined-disabled"
-          label="Explain"
-          margin="normal"
-          variant="outlined"
-          onChange={ this.handleChange }
-          value={ this.state.text }
-        />
-        <button
+      <div className="add-topic-page">
+        <div className="type-select">
+          <Select
+            name="type"
+            fullWidth
+            label="select type"
+            value={this.state.type}
+            onChange={this.handleChange}
+          >
+            <MenuItem value="give">GIVE</MenuItem>
+            <MenuItem value="take">TAKE</MenuItem>
+          </Select>
+        </div>
+        <div className="topic-title">
+          <TextField
+            name="title"
+            fullWidth
+            id="outlined-disabled"
+            type="text"
+            label="Topic title"
+            margin="normal"
+            onChange={ this.handleChange }
+            value={ this.state.title }
+          />
+        </div>
+        <div className="topic-body">
+          <TextField
+            name="text"
+            type="text"
+            fullWidth
+            id="outlined-disabled"
+            label="Explain"
+            margin="normal"
+            onChange={ this.handleChange }
+            value={ this.state.text }
+          />
+        </div>
+        <Button
           type="submit"
           onClick={ this.handleSubmit }
         >
           Submit
-        </button>
+        </Button>
       </div>
     );
   }

@@ -28,14 +28,14 @@ class Comment extends React.Component {
       <div>
         {Object.keys(comments).map((key) => (
           <div className="comment">
-            <Link to={"/user/" + comments[key].uid}>
-              <div className="user-img">
-                <img src={getUserImg(this.props.users.users.filter(e => e.uid === comments[key].uid)[0])} />
-                <div className="user-name">
-                  {getUserName(this.props.users.users.filter(e => e.uid === comments[key].uid)[0])}
-                </div>
-              </div>
-            </Link>
+            <div className="user-img">
+              <Link to={"/user/" + comments[key].uid}>
+                  <img src={getUserImg(this.props.users.users.filter(e => e.uid === comments[key].uid)[0])} />
+                  <div className="user-name">
+                    {getUserName(this.props.users.users.filter(e => e.uid === comments[key].uid)[0])}
+                  </div>
+              </Link>
+            </div>
             <div className="comment-body">{comments[key].comment}</div>
           </div>
         ))}

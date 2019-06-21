@@ -30,7 +30,6 @@ class TopicList extends React.Component {
   }
 
   handleToTopicPage = (topic) => {
-    console.log(topic);
     this.props.history.push('/topic/'+topic.id)
   }
 
