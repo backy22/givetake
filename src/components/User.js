@@ -67,7 +67,7 @@ class User extends React.Component {
     let user = users.filter(e => e.id === uid)[0]
     let current_user = this.props.auth
     let filtered_topics;
-    let isAuth = (current_user.uid === user.id) ? true : false
+    let isAuth = (current_user && current_user.uid === user.id) ? true : false
     if (isAuth){
       filtered_topics = topics.filter(e => e.uid === uid)
     }else{

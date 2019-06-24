@@ -121,7 +121,7 @@ class Topic extends React.Component {
                 </div>
                 {topicTitle}
               </div>
-              {(this.props.auth.uid == topic.uid) && editButton}
+              {this.props.auth && (this.props.auth.uid == topic.uid) && editButton}
               {topicText}
               <div className="comments"><Comment topic={topic} /></div>
             </div>
