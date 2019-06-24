@@ -62,6 +62,8 @@ class Topic extends React.Component {
     let editButton;
     let topicTitle;
     let topicText;
+    let user = this.props.auth
+    const link_class_name = user ? null : "disabled-link"
 
     if (topic){
       if (this.state.editing){
@@ -112,7 +114,7 @@ class Topic extends React.Component {
             <div className="topic-page">
               <div className="topic">
                 <div className="user-img">
-                  <Link to={"/user/" + topic.uid} >
+                  <Link className={link_class_name} to={"/user/" + topic.uid} >
                     <img src={getUserImg(this.props.users.users.filter(e => e.id === topic.uid)[0])} />
                     <div className="user-name">
                       {getUserName(this.props.users.users.filter(e => e.id === topic.uid)[0])}
@@ -121,11 +123,11 @@ class Topic extends React.Component {
                 </div>
                 {topicTitle}
               </div>
-              {this.props.auth && (this.props.auth.uid == topic.uid) && editButton}
+              {user && (user.uid == topic.uid) && editButton}
               {topicText}
               <div className="comments"><Comment topic={topic} /></div>
             </div>
-            {this.props.auth && (
+            {user && (
               <footer>
                 <CommentForm topic={topic} />
               </footer>
