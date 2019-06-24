@@ -11,22 +11,14 @@ import TopicList from './components/TopicList';
 import Topic from './components/Topic';
 import AddTopic from './components/AddTopic';
 import User from './components/User';
-import Button from '@material-ui/core/button';
+import Header from './components/Header';
 import store from './store';
-import logo from './logo-white.png';
 
 class App extends React.Component {
   render() {
     return(
       <div>
-        <header>
-        <Link to={'/'}>
-          <img className="logo" src={logo} />
-        </Link>
-        <Link to={'/signin'}>
-          <div className="signin">Sign In | Login </div>
-        </Link>
-        </header>
+        <Header />
         <Switch>
           <Route exact path={'/'} component={TopicList} />
           <Route path={'/topic/:id'} component={Topic} />

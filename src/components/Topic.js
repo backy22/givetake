@@ -4,7 +4,6 @@ import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
 import Button from '@material-ui/core/button';
 import { connect } from 'react-redux'
-import { topicsRef, usersRef, authRef } from "../config/firebase";
 import { fetchTopics, updateTopic } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
 import { fetchUsers } from '../actions/userActions';
@@ -65,6 +64,7 @@ class Topic extends React.Component {
     let editButton;
     let topicTitle;
     let topicText;
+
     if (topic){
       if (this.state.editing){
         topicTitle = (
@@ -109,29 +109,31 @@ class Topic extends React.Component {
 
     return (
       <div>
-          {topic && (
+        {topic && (
           <div>
             <div className="topic-page">
               <div className="topic">
                 <div className="user-img">
                   <Link to={"/user/" + topic.uid} >
-                    <img src={getUserImg(this.props.users.users.filter(e => e.uid === topic.uid)[0])} />
+                    <img src={getUserImg(this.props.users.users.filter(e => e.id === topic.uid)[0])} />
                     <div className="user-name">
-                      {getUserName(this.props.users.users.filter(e => e.uid === topic.uid)[0])}
+                      {getUserName(this.props.users.users.filter(e => e.id === topic.uid)[0])}
                     </div>
                   </Link>
                 </div>
                 {topicTitle}
               </div>
-              {editButton}
+              {(this.props.auth.uid == topic.uid) && editButton}
               {topicText}
+              <div className="comments"><Comment topic={topic} /></div>
             </div>
-            <div className="comments"><Comment topic={topic} /></div>
-            <footer>
-              <CommentForm topic={topic} />
-            </footer>
+            {this.props.auth && (
+              <footer>
+                <CommentForm topic={topic} />
+              </footer>
+            )}
           </div>
-          )}
+        )}
       </div>
     );
   }

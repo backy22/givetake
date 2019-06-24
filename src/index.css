@@ -9,8 +9,9 @@ body {
   background: -moz-linear-gradient(top, #F54EA2, #A94CAF);
   background: -webkit-linear-gradient(top, #F54EA2, #A94CAF);
   background: linear-gradient(to bottom, #F54EA2, #A94CAF);
-  height: 100vh;
   word-wrap:break-word;
+  position: relative;
+  height: 100vh;
 }
 
 code {
@@ -60,7 +61,26 @@ form {
   background: #42218E;
 }
 
+.date {
+  color: #fff;
+  font-size: 11px;
+}
+
+.disabled-link {
+  pointer-events: none;
+}
+
 /* TopicList */
+.search {
+  width: 80%;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 10px;
+  display: flex;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
 .topic-list {
   width: 80%;
   margin: 0 auto;
@@ -105,6 +125,8 @@ form {
 .topic-page {
   width: 80%;
   margin: 0 auto;
+  overflow: scroll;
+  height: 100vh;
 }
 
 .title-input {
@@ -123,14 +145,17 @@ form {
 
 .comments {
   margin-top: 20px;
-  width: 80%;
-  margin: 0 auto;
+  width: 100%;
 }
 
 /* Comment page */
 .comment {
   display: flex;
   margin: 10px;
+}
+
+.my-comment {
+  justify-content: flex-end;
 }
 
 .comment-body {
@@ -202,7 +227,7 @@ form {
 /* Footer */
 footer {
   background-color: #fff;
-  position: absolute;
+  position: fixed;
   bottom: 0;
   width: 100vw;
 }

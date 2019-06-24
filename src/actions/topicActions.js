@@ -3,7 +3,7 @@ import { FETCH_TOPICS, ADD_TOPIC, UPDATE_TOPIC } from './types';
 
 export const fetchTopics = () => dispatch => {
   let previousTopics = []
-  topicsRef.onSnapshot(snap => {
+  topicsRef.orderBy("date", "desc").onSnapshot(snap => {
     if (snap.size > 0){
       snap.docs.map(doc => {
         previousTopics.push({
@@ -13,6 +13,7 @@ export const fetchTopics = () => dispatch => {
           type: doc.data().type,
           active: doc.data().active,
           uid: doc.data().uid,
+          date: doc.data().date,
           comments: doc.data().comments
         });
       })
@@ -31,5 +32,5 @@ export const addTopic = (newTopic) => dispatch => {
 };
 
 export const updateTopic = (topic) => dispatch => {
-  topicsRef.doc(topic.id).update({title: topic.title, text: topic.text, active: topic.active})
+  topicsRef.doc(topic.id).update({title: topic.title, text: topic.text, active: topic.active, date: new Date()})
 };

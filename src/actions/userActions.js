@@ -8,7 +8,6 @@ export const fetchUsers = () => dispatch => {
       snap.docs.map(doc => {
         previousUsers.push({
           id: doc.id,
-          uid: doc.data().uid,
           name: doc.data().name,
           profile_text: doc.data().profile_text,
           email: doc.data().email,

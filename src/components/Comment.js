@@ -4,7 +4,6 @@ import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
 import Button from '@material-ui/core/button';
 import { connect } from 'react-redux'
-import { topicsRef, usersRef, authRef } from "../config/firebase";
 import { fetchTopics } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
 import { fetchUsers } from '../actions/userActions';
@@ -27,16 +26,19 @@ class Comment extends React.Component {
     return (
       <div>
         {Object.keys(comments).map((key) => (
-          <div className="comment">
-            <div className="user-img">
-              <Link to={"/user/" + comments[key].uid}>
-                  <img src={getUserImg(this.props.users.users.filter(e => e.uid === comments[key].uid)[0])} />
-                  <div className="user-name">
-                    {getUserName(this.props.users.users.filter(e => e.uid === comments[key].uid)[0])}
-                  </div>
-              </Link>
-            </div>
+          <div key={key} className={(comments[key].uid == this.props.auth.uid) ? "my-comment comment" : "comment"}> 
+            {(comments[key].uid != this.props.auth.uid) &&
+              <div className="user-img my-user-img">
+                <Link to={"/user/" + comments[key].uid}>
+                    <img src={getUserImg(this.props.users.users.filter(e => e.id === comments[key].uid)[0])} />
+                    <div className="user-name">
+                      {getUserName(this.props.users.users.filter(e => e.id === comments[key].uid)[0])}
+                    </div>
+                </Link>
+              </div>
+            }
             <div className="comment-body">{comments[key].comment}</div>
+            <div className="date">{comments[key].date.toDate().toString()}</div>
           </div>
         ))}
       </div>

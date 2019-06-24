@@ -15,7 +15,8 @@ class CommentForm extends Component {
     super(props);
     this.state = {
       comment: '',
-      uid: ''
+      uid: '',
+      date: ''
     };
 
     this.onChange = this.onChange.bind(this);
@@ -31,18 +32,18 @@ class CommentForm extends Component {
 
     this.setState({
       comment: '',
-      uid: ''
+      uid: '',
+      date: ''
     });
     var user = this.props.auth;
 
     const comment = {
       comment: this.state.comment,
-      uid: user.uid
+      uid: user.uid,
+      date: new Date()
     };
-    console.log(this.props.topic);
 
     this.props.addComment(comment,this.props.topic);
-    this.props.fetchComments(this.props.topic);
   }
 
   render() {
@@ -67,6 +68,7 @@ class CommentForm extends Component {
 }
 
 CommentForm.propTypes = {
+  fetchTopics: PropTypes.func.isRequired,
   addComment: PropTypes.func.isRequired,
   fetchComments: PropTypes.func.isRequired,
   fetchUser: PropTypes.func.isRequired
@@ -76,4 +78,4 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-export default withRouter(connect(mapStateToProps, {addComment, fetchUser, fetchComments})(CommentForm));
+export default withRouter(connect(mapStateToProps, {fetchTopics, addComment, fetchUser, fetchComments})(CommentForm));

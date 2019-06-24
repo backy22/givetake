@@ -16,7 +16,8 @@ class AddTopic extends React.Component {
     this.state = {
       title: '',
       text: '',
-      type: ''
+      type: '',
+      date: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -31,7 +32,8 @@ class AddTopic extends React.Component {
     this.setState({
       title: '',
       text: '',
-      type: ''
+      type: '',
+      date: ''
     });
     var user = this.props.auth
   
@@ -40,6 +42,7 @@ class AddTopic extends React.Component {
       text: this.state.text,
       type: this.state.type,
       uid: user.uid,
+      date: new Date(),
       active: true
     }
     this.props.addTopic(topic);

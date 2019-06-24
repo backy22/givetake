@@ -10,26 +10,12 @@ export const fetchUser = () => dispatch => {
         payload: user
       });
 
-      usersRef.where('uid', '==', user.uid).get().then(snap => {
-        if (snap.size > 0){
-          //TODO update user data
-          // snap.docs[0].set({
-          //   uid: user.uid, 
-          //   name: user.displayName,
-          //   email: user.email, 
-          //   photo_url: user.photoURL, 
-          //   provider_id: user.providerData[0].providerId
-          // },{merge: true})
-        }else{
-          usersRef.add({
-            uid: user.uid, 
-            name: user.displayName, 
-            email: user.email, 
-            photo_url: user.photoURL, 
-            provider_id: user.providerData[0].providerId
-          });
-        }
-      });
+      usersRef.doc(user.uid).set({
+        name: user.displayName, 
+        email: user.email, 
+        photo_url: user.photoURL, 
+        provider_id: user.providerData[0].providerId
+      },{merge: true});
 
     } else {
       dispatch({

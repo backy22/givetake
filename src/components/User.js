@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
 import AddTopic from './AddTopic';
-import { firebaseDb, topicsRef, usersRef, authRef } from "../config/firebase";
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux'
 import { fetchTopics, updateTopic } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
 import { fetchUsers, updateUser } from '../actions/userActions';
 import PropTypes from 'prop-types';
-import {Edit, Check} from '@material-ui/icons';
+import { Edit, Check } from '@material-ui/icons';
 import Switch from '@material-ui/core/Switch';
 import Input from '@material-ui/core/Input';
 
@@ -68,7 +67,7 @@ class User extends React.Component {
     let uid = params.params.uid
     let topics = this.props.topics.topics
     let users = this.props.users.users
-    let user = users.filter(e => e.uid === uid)[0]
+    let user = users.filter(e => e.id === uid)[0]
     let current_user = this.props.auth
     let filtered_topics = topics.filter(e => e.uid === uid)
     let give_topics = filtered_topics.filter(e => e.type === "give")  
@@ -122,7 +121,7 @@ class User extends React.Component {
                 {userName}
               </div>
             </div>
-            {editButton}
+            {this.props.auth && editButton}
             <div>TAKE{take_topics.length}</div>
             {profileText}
           </div>
