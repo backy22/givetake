@@ -2,7 +2,7 @@ import React from 'react';
 import * as firebase from 'firebase';
 import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux'
-import { fetchTopics, addTopic } from '../actions/topicActions';
+import { addTopic } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';

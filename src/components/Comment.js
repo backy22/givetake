@@ -1,15 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
-import Button from '@material-ui/core/button';
 import { connect } from 'react-redux'
-import { fetchTopics } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
 import { fetchUsers } from '../actions/userActions';
 import { fetchComments } from '../actions/commentActions';
 import PropTypes from 'prop-types';
-import { getUserImg, getUserName } from '../utility.js';
+import { getUserImg, getUserName, formatDate } from '../utility.js';
 
 class Comment extends React.Component {
 
@@ -26,8 +23,8 @@ class Comment extends React.Component {
     return (
       <div>
         {Object.keys(comments).map((key) => (
-          <div key={key} className={(comments[key].uid == this.props.auth.uid) ? "my-comment comment" : "comment"}> 
-            {(comments[key].uid != this.props.auth.uid) &&
+          <div key={key} className={(comments[key].uid === this.props.auth.uid) ? "my-comment comment" : "comment"}> 
+            {(comments[key].uid !== this.props.auth.uid) &&
               <div className="user-img my-user-img">
                 <Link to={"/user/" + comments[key].uid}>
                     <img src={getUserImg(this.props.users.users.filter(e => e.id === comments[key].uid)[0])} />
@@ -38,7 +35,7 @@ class Comment extends React.Component {
               </div>
             }
             <div className="comment-body">{comments[key].comment}</div>
-            <div className="date">{comments[key].date.toDate().toString()}</div>
+            <div className="date">{formatDate(comments[key].date.toDate())}</div>
           </div>
         ))}
       </div>

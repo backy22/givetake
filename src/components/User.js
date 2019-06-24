@@ -1,9 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Link } from "react-router-dom";
-import { withRouter } from 'react-router';
-import AddTopic from './AddTopic';
-import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux'
 import { fetchTopics, updateTopic } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
@@ -12,12 +8,13 @@ import PropTypes from 'prop-types';
 import { Edit, Check } from '@material-ui/icons';
 import Switch from '@material-ui/core/Switch';
 import Input from '@material-ui/core/Input';
+import Footer from './Footer';
 
 class User extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: '',
+      nickname: '',
       profile_text: '',
       editing: false
     }
@@ -35,7 +32,7 @@ class User extends React.Component {
  
   startEditing = (e,user) => {
     this.setState({
-      name: user.name,
+      nickname: user.nickname || user.name,
       profile_text: user.profile_text,
       editing: true
     });
@@ -51,7 +48,7 @@ class User extends React.Component {
     this.setState({
       editing: false
     });
-    user['name'] = this.state.name
+    user['nickname'] = this.state.nickname
     user['profile_text'] = this.state.profile_text
     this.props.updateUser(user) 
   }
@@ -69,9 +66,15 @@ class User extends React.Component {
     let users = this.props.users.users
     let user = users.filter(e => e.id === uid)[0]
     let current_user = this.props.auth
-    let filtered_topics = topics.filter(e => e.uid === uid)
+    let filtered_topics;
+    let isAuth = (current_user.uid === user.id) ? true : false
+    if (isAuth){
+      filtered_topics = topics.filter(e => e.uid === uid)
+    }else{
+      filtered_topics = topics.filter(e => e.uid === uid).filter(e => e.active)
+    }
     let give_topics = filtered_topics.filter(e => e.type === "give")  
-    let take_topics = filtered_topics.filter(e => e.type == "take")
+    let take_topics = filtered_topics.filter(e => e.type === "take")
     let userName;
     let profileText;
     let editButton;
@@ -81,12 +84,12 @@ class User extends React.Component {
         userName = (
           <div className="user-name">
             <Input
-              name="name"
+              name="nickname"
               fullWidth
               type="text"
               onChange={this.handleChange}
-              defaultValue={user.name}
-              value={this.state.name}
+              defaultValue={user.nickname || user.name}
+              value={this.state.nickname}
             />
           </div>
         );
@@ -104,43 +107,54 @@ class User extends React.Component {
         );
         editButton = (<Check onClick={(e) => this.handleSubmit(e,user)} />);
       }else{
-        userName = (<div className="user-name">{user.name}</div>);
+        userName = (<div className="user-name">{user.nickname || user.name}</div>);
         profileText = (<div className="profile-text">{user.profile_text}</div>);
         editButton = (<Edit onClick={(e) => this.startEditing(e,user)} />);
       }
     }
   
     return (
-      <div className="user-page">
-        {user && (
-          <div>
-            <div>GIVE{give_topics.length}</div>
-            <div className="profile">
-              <div className="user-img">
-                <img src={user.photo_url} />
-                {userName}
+      <div>
+        <div className="user-page">
+          {user && (
+            <div>
+              <div className="profile">
+                <div className="give-count">
+                  <div>{give_topics.length}</div>
+                  <div>GIVE</div>
+                  </div>
+                <div className="user-img">
+                  <img src={user.photo_url} />
+                  {userName}
+                </div>
+                <div className="take-count">
+                  <div>{take_topics.length}</div>
+                  <div>TAKE</div>
+                </div>
+              </div>
+              { isAuth && editButton}
+              {profileText}
+            </div>
+          )}
+          {filtered_topics.map((topic) =>
+            <div className="user-topics">
+              <div className="topic-title">
+                <Link to={"/topic/" + topic.id}>
+                  {topic.title}
+                </Link>
+                <span className={topic.type+"-type type-icon"}>{topic.type}</span>
+                { isAuth && (
+                  <Switch
+                    className="switch"
+                    checked={topic.active ? true : false}
+                    onChange={(e) => this.handleCheckChange(e,topic)}
+                  />
+                )}
               </div>
             </div>
-            {this.props.auth && editButton}
-            <div>TAKE{take_topics.length}</div>
-            {profileText}
-          </div>
-        )}
-        {filtered_topics.map((topic) =>
-          <div className="user-topics">
-            <div className="topic-title">
-              <Link to={"/topic/" + topic.id}>
-                {topic.title}
-              </Link>
-              <span className={topic.type+"-type type-icon"}>{topic.type}</span>
-              <Switch
-                className="switch"
-                checked={topic.active ? true : false}
-                onChange={(e) => this.handleCheckChange(e,topic)}
-              />
-            </div>
-          </div>
-        )}
+          )}
+        </div>
+        <Footer />
       </div>
     );
   }

@@ -1,7 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import Button from '@material-ui/core/Button';
 import { authRef} from "../config/firebase";
 import { connect } from 'react-redux'
 import { fetchUser } from '../actions/authActions';

@@ -9,6 +9,7 @@ export const fetchUsers = () => dispatch => {
         previousUsers.push({
           id: doc.id,
           name: doc.data().name,
+          nickname: doc.data().nickname,
           profile_text: doc.data().profile_text,
           email: doc.data().email,
           photo_url: doc.data().photo_url,

@@ -1,8 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
-import Button from '@material-ui/core/button';
 import { connect } from 'react-redux'
 import { fetchTopics, updateTopic } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';

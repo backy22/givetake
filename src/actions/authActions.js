@@ -11,7 +11,7 @@ export const fetchUser = () => dispatch => {
       });
 
       usersRef.doc(user.uid).set({
-        name: user.displayName, 
+        name: user.displayName,
         email: user.email, 
         photo_url: user.photoURL, 
         provider_id: user.providerData[0].providerId

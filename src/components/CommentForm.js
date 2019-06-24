@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { addComment, fetchComments } from '../actions/commentActions';
 import { fetchUser } from '../actions/authActions';
 import { fetchTopics } from '../actions/topicActions';
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
 import { Send } from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';

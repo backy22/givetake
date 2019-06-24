@@ -1,14 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import { withRouter } from 'react-router';
-import Button from '@material-ui/core/button';
 import { connect } from 'react-redux'
 import { fetchTopics } from '../actions/topicActions';
 import { fetchUser } from '../actions/authActions';
 import { fetchUsers } from '../actions/userActions';
 import PropTypes from 'prop-types';
-import { getUserImg, getUserName } from '../utility.js';
+import Footer from './Footer';
+import { getUserImg, getUserName, formatDate } from '../utility.js';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 
@@ -20,10 +19,8 @@ class TopicList extends React.Component {
       search: ''
     };
 
-    this.handleToAddTopicPage = this.handleToAddTopicPage.bind(this);
     this.handleToTopicPage = this.handleToTopicPage.bind(this);
     this.handleToUserPage = this.handleToUserPage.bind(this);
-    this.handleToMyPage = this.handleToMyPage.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -31,10 +28,6 @@ class TopicList extends React.Component {
     this.props.fetchTopics();
     this.props.fetchUsers();
     this.props.fetchUser();
-  }
-
-  handleToAddTopicPage = () => {
-    this.props.history.push('/add-topic')
   }
 
   handleToTopicPage = (topic) => {
@@ -45,11 +38,6 @@ class TopicList extends React.Component {
     this.props.history.push('/user/'+topic.uid)
   }
 
-  handleToMyPage = () => {
-    var user = this.props.auth;
-    this.props.history.push('/user/'+ user.uid)
-  }
-
   handleChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   }
@@ -57,7 +45,7 @@ class TopicList extends React.Component {
   render(){
     const topics = this.props.topics.topics.filter(
       (topic) => {
-        return topic.title.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
+        return topic.active && topic.title.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1;
       }
     );
     var user = this.props.auth
@@ -78,7 +66,7 @@ class TopicList extends React.Component {
           </div>
           <span className={topic.type+"-type type-icon"}>{topic.type}</span>
         </div>
-        <div className="date">{topic.date.toDate().toString()}</div>
+        <div className="date">{formatDate(topic.date.toDate())}</div>
       </div>
     ));
 
@@ -100,16 +88,7 @@ class TopicList extends React.Component {
           {topics_screen}
         </div>
       </BrowserRouter>
-      {user &&     
-      <footer>
-        <Button onClick={this.handleToAddTopicPage}>
-          Add Topic
-        </Button>
-        <Button onClick={this.handleToMyPage} >
-          My Page
-        </Button>
-      </footer>
-      }
+      <Footer />
     </div>
     );
   }
