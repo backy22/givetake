@@ -23,8 +23,8 @@ class Comment extends React.Component {
     return (
       <div>
         {Object.keys(comments).map((key) => (
-          <div key={key} className={(comments[key].uid === this.props.auth.uid) ? "my-comment comment" : "comment"}> 
-            {(comments[key].uid !== this.props.auth.uid) &&
+          <div key={key} className={(this.props.auth && comments[key].uid === this.props.auth.uid) ? "my-comment comment" : "comment"}> 
+            {this.props.auth && (comments[key].uid !== this.props.auth.uid) &&
               <div className="user-img my-user-img">
                 <Link to={"/user/" + comments[key].uid}>
                     <img src={getUserImg(this.props.users.users.filter(e => e.id === comments[key].uid)[0])} />
