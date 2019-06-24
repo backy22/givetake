@@ -30,7 +30,7 @@ header {
 
 .signin {
   position: absolute;
-  top: 5%;
+  top: 3%;
   right: 10%;
   color: #fff;
 }
@@ -72,6 +72,10 @@ form {
 
 .disabled-link {
   pointer-events: none;
+}
+
+.material-icon {
+  color: #000080;
 }
 
 /* TopicList */
@@ -166,11 +170,15 @@ form {
 .comment-body {
   padding: 10px;
   margin-top: 15px;
-  background-color: #fff;
+  background-color: #D9E1E8;
   border-radius: 10px;
   display: flex;
   max-width: 70%;
   word-break: break-all;
+}
+
+.my-comment .comment-body {
+  background-color: #fff;
 }
 
 .comment-form {
@@ -190,6 +198,15 @@ form {
 
 .add-topic-page .topic-title {
   width: 95%;
+}
+
+.submit {
+  width: 100%;
+  text-align: center;
+}
+
+.submit button {
+  display: inline-block;
 }
 
 /* User page */

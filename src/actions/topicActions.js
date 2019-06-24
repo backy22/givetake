@@ -4,6 +4,7 @@ import { FETCH_TOPICS, ADD_TOPIC, UPDATE_TOPIC } from './types';
 export const fetchTopics = () => dispatch => {
   let previousTopics = []
   topicsRef.orderBy("date", "desc").onSnapshot(snap => {
+    previousTopics = []
     if (snap.size > 0){
       snap.docs.map(doc => {
         previousTopics.push({

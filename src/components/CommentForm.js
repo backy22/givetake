@@ -59,7 +59,7 @@ class CommentForm extends Component {
               value={this.state.comment}
             />
           </div>
-          <Button type="submit"><Send /></Button>
+          <Button type="submit"><Send className="material-icon" /></Button>
         </form>
       </div>
     );

@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
 
 class AddTopic extends React.Component {
   constructor(props) {
@@ -53,6 +54,9 @@ class AddTopic extends React.Component {
     return (
       <div className="add-topic-page">
         <div className="type-select">
+          <InputLabel shrink>
+            Select type
+          </InputLabel>
           <Select
             name="type"
             fullWidth
@@ -88,12 +92,11 @@ class AddTopic extends React.Component {
             value={ this.state.text }
           />
         </div>
-        <Button
-          type="submit"
-          onClick={ this.handleSubmit }
-        >
-          Submit
-        </Button>
+        <div className="submit">
+          <Button type="submit" onClick={ this.handleSubmit }>
+            Submit
+          </Button>
+        </div>
       </div>
     );
   }

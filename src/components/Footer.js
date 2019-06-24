@@ -29,13 +29,13 @@ class Footer extends React.Component {
           <footer>
             <div className="footer-icons">
               <Button>
-                <Chat />
+                <Chat className="material-icon"/>
               </Button>
               <Button onClick={this.handleToAddTopicPage}>
-                <Add />
+                <Add className="material-icon"/>
               </Button>
               <Button onClick={this.handleToMyPage} >
-                <Home />
+                <Home className="material-icon"/>
               </Button>
             </div>
           </footer>
